@@ -1,21 +1,73 @@
-// Raylibpvz.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
-#include <raylib.h>
+#include <vector>
+#include "raylib.h"
+#include "Bullet.hpp"
 
-int main()
+//------------------------------------------------------------------------------------
+// Program main entry point
+//------------------------------------------------------------------------------------
+int main(void)
 {
-    std::cout << "Hello World!\n";
+    // Initialization
+    //--------------------------------------------------------------------------------------
+    const int screenWidth = 800;
+    const int screenHeight = 450;
+    Vector2 mousePos = GetMousePosition();
+
+    InitWindow(screenWidth, screenHeight, "Plants versus Zombies");
+
+    // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
+    Texture2D peashooter = LoadTexture("res/img/peashooter.png");        // Texture loading
+    
+    // Bullet bullet1 = Bullet(mousePos, Vector2{1, 0}, texture);
+    std::vector<Bullet> bullets;
+    
+    //---------------------------------------------------------------------------------------
+    SetTargetFPS(240);
+    // Main game loop
+    while (!WindowShouldClose())    // Detect window close button or ESC key
+    {
+        // Update
+        //----------------------------------------------------------------------------------
+        // TODO: Update your variables here
+        //----------------------------------------------------------------------------------
+
+        // Draw
+        //----------------------------------------------------------------------------------
+        mousePos = GetMousePosition();
+        
+
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            bullets.push_back(Bullet(mousePos, Vector2{ 1.0f, 0.0f }, peashooter));
+        }
+        for (Bullet bullet : bullets)
+        {
+            bullet.move();
+        }
+        
+        BeginDrawing();
+        
+        ClearBackground(RAYWHITE);
+
+        DrawTexture(peashooter, mousePos.x - peashooter.width / 2, mousePos.y - peashooter.height / 2, WHITE);
+        for (Bullet bullet : bullets)
+        {
+            bullet.render();
+        }
+        DrawText("this IS a texture following the mouse!", 360, 370, 10, GRAY);
+        
+
+        EndDrawing();
+        //----------------------------------------------------------------------------------
+    }
+
+    // De-Initialization
+    //--------------------------------------------------------------------------------------
+    UnloadTexture(peashooter);       // Texture unloading
+
+    CloseWindow();                // Close window and OpenGL context
+    //--------------------------------------------------------------------------------------
+
+    return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
