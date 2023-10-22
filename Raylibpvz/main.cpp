@@ -18,8 +18,9 @@ int main(void)
 
     // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
     Texture2D peashooter = LoadTexture("res/img/peashooter.png");        // Texture loading
+    Texture2D pea = LoadTexture("res/img/pea.png");
     
-    // Bullet bullet1 = Bullet(mousePos, Vector2{1, 0}, texture);
+    Bullet bullet1 = Bullet(mousePos, Vector2{1, 0}, pea);
     std::vector<Bullet> bullets;
     
     //---------------------------------------------------------------------------------------
@@ -39,12 +40,13 @@ int main(void)
 
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
-            bullets.push_back(Bullet(mousePos, Vector2{ 1.0f, 0.0f }, peashooter));
+            bullets.push_back(Bullet(mousePos, pea));
         }
-        for (Bullet bullet : bullets)
+        for (auto & b : bullets)
         {
-            bullet.move();
+            b.move();
         }
+        bullet1.move();
         
         BeginDrawing();
         
@@ -55,6 +57,7 @@ int main(void)
         {
             bullet.render();
         }
+        bullet1.render();
         DrawText("this IS a texture following the mouse!", 360, 370, 10, GRAY);
         
 
@@ -65,6 +68,7 @@ int main(void)
     // De-Initialization
     //--------------------------------------------------------------------------------------
     UnloadTexture(peashooter);       // Texture unloading
+    UnloadTexture(pea);
 
     CloseWindow();                // Close window and OpenGL context
     //--------------------------------------------------------------------------------------

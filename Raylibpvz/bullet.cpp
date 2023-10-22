@@ -1,7 +1,11 @@
 #include "Bullet.hpp"
 
-Bullet::Bullet(Vector2 p_origin, Vector2 p_vel, Texture p_tex)
+Bullet::Bullet(Vector2 p_origin, Vector2 p_vel, Texture2D p_tex)
 	:pos(p_origin),vel(p_vel),tex(p_tex)
+{}
+
+Bullet::Bullet(Vector2 p_origin, Texture2D p_tex)
+	:pos(p_origin), vel(Vector2{1, 0}), tex(p_tex)
 {}
 
 void Bullet::render()
